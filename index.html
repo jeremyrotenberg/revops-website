@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeremy Rotenberg — RevOps Consulting for B2B Companies</title>
+<meta name="description" content="Independent RevOps consulting for B2B companies. Fix your CRM, pipeline, and attribution — the foundation AI tooling depends on. Based in Montreal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0c;
+    --bg-elev: #14140f;
+    --ink: #e8e6dc;
+    --ink-dim: #8a8778;
+    --ink-faint: #4a4840;
+    --accent: #c2f04c;
+    --rule: #2a2823;
+    --warn: #ff6b35;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(194, 240, 76, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(255, 107, 53, 0.03) 0%, transparent 40%);
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    z-index: 100;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(14, 14, 12, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; gap: 16px; }
+  .logo { font-weight: 700; font-size: 13px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+  .logo-mark { width: 10px; height: 10px; background: var(--accent); display: inline-block; animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  nav ul { list-style: none; display: flex; gap: 24px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; align-items: center; }
+  nav a { color: var(--ink-dim); transition: color 0.2s; }
+  nav a:hover, nav a.active { color: var(--ink); }
+  nav a.active::before { content: '→ '; color: var(--accent); }
+  .nav-cta { padding: 8px 14px; background: var(--accent); color: var(--bg) !important; font-weight: 500; }
+  .nav-cta:hover { background: var(--ink); }
+  .nav-cta::before { content: '' !important; }
+
+  .status-bar { border-bottom: 1px solid var(--rule); padding: 8px 0; font-size: 11px; color: var(--ink-dim); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .status-dot { display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 6px; animation: pulse 2.4s ease-in-out infinite; }
+
+  .page { display: none; animation: fadeIn 0.35s ease-out; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .hero { padding: 100px 0 80px; border-bottom: 1px solid var(--rule); position: relative; }
+  .hero-meta { color: var(--ink-dim); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 32px; display: flex; align-items: center; gap: 14px; }
+  .hero-meta::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+
+  h1 { font-family: 'Fraunces', serif; font-size: clamp(44px, 6.5vw, 84px); line-height: 0.98; font-weight: 400; letter-spacing: -0.025em; margin-bottom: 32px; max-width: 18ch; }
+  h1 .accent { color: var(--accent); font-style: italic; }
+  h1 .strike { position: relative; color: var(--ink-dim); }
+  h1 .strike::after { content: ''; position: absolute; left: 0; right: 0; top: 52%; height: 3px; background: var(--warn); }
+
+  .hero-sub { font-size: 16px; color: var(--ink-dim); max-width: 58ch; line-height: 1.65; margin-bottom: 48px; }
+  .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border: 1px solid var(--rule); background: transparent; color: var(--ink); font-family: inherit; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 500; }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+  .btn .arrow { display: inline-block; transition: transform 0.2s; }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  section { padding: 80px 0; border-bottom: 1px solid var(--rule); }
+  .section-label { display: flex; align-items: baseline; gap: 16px; margin-bottom: 48px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
+  .section-label .index { color: var(--accent); font-weight: 700; }
+  .section-label .rule { flex: 1; height: 1px; background: var(--rule); }
+
+  h2 { font-family: 'Fraunces', serif; font-size: clamp(30px, 4.5vw, 50px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 24px; max-width: 22ch; }
+  h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+
+  .symptoms-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .symptom-card { background: var(--bg); padding: 36px; transition: background 0.25s; }
+  .symptom-card:hover { background: var(--bg-elev); }
+  .symptom-card .symbol { font-family: 'Fraunces', serif; font-size: 40px; color: var(--warn); line-height: 1; margin-bottom: 18px; font-style: italic; }
+  .symptom-card h3 { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 400; text-transform: none; letter-spacing: -0.015em; margin-bottom: 12px; }
+  .symptom-card p { color: var(--ink-dim); font-size: 13px; line-height: 1.7; }
+
+  .thesis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .thesis-text p { color: var(--ink-dim); margin-bottom: 20px; font-size: 15px; }
+  .thesis-text strong { color: var(--ink); font-weight: 500; }
+  .thesis-data { border: 1px solid var(--rule); padding: 32px; background: var(--bg-elev); }
+  .data-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px dashed var(--rule); font-size: 12px; gap: 16px; }
+  .data-row:last-child { border-bottom: none; }
+  .data-row .key { color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .data-row .val { color: var(--ink); font-weight: 500; text-align: right; }
+  .data-row .val.accent { color: var(--accent); }
+
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .service-card { background: var(--bg); padding: 40px; transition: background 0.25s; }
+  .service-card:hover { background: var(--bg-elev); }
+  .service-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .service-tag::before { content: ''; width: 18px; height: 1px; background: var(--accent); }
+  .service-name { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; letter-spacing: -0.015em; margin-bottom: 16px; line-height: 1.1; }
+  .service-desc { color: var(--ink-dim); font-size: 13px; line-height: 1.7; margin-bottom: 24px; }
+  .service-meta { display: flex; gap: 32px; font-size: 11px; padding-top: 20px; border-top: 1px dashed var(--rule); }
+  .service-meta div { color: var(--ink-dim); }
+  .service-meta strong { display: block; color: var(--ink); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .service-detail { padding: 56px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 280px 1fr; gap: 64px; }
+  .service-detail:last-of-type { border-bottom: none; }
+  .service-detail .sd-left .num { font-family: 'Fraunces', serif; font-size: 80px; line-height: 1; color: var(--accent); font-weight: 300; }
+  .service-detail .sd-left .label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-top: 12px; }
+  .service-detail h3.sd-title { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.1; text-transform: none; margin-bottom: 20px; }
+  .service-detail p { color: var(--ink-dim); margin-bottom: 24px; font-size: 14px; line-height: 1.7; }
+  .sd-deliverables { margin-top: 24px; }
+  .sd-deliverables-title { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
+  .sd-deliverables ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sd-deliverables li { font-size: 13px; color: var(--ink); padding-left: 18px; position: relative; }
+  .sd-deliverables li::before { content: '+'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .fit-panel { border: 1px solid var(--rule); padding: 36px; background: var(--bg-elev); }
+  .fit-panel.yes { border-color: rgba(194, 240, 76, 0.3); }
+  .fit-panel.no { border-color: rgba(255, 107, 53, 0.25); }
+  .fit-panel .header-tag { display: inline-block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; padding: 4px 10px; margin-bottom: 24px; font-weight: 700; }
+  .fit-panel.yes .header-tag { background: var(--accent); color: var(--bg); }
+  .fit-panel.no .header-tag { background: var(--warn); color: var(--bg); }
+  .fit-panel ul { list-style: none; }
+  .fit-panel li { padding: 14px 0; border-bottom: 1px dashed var(--rule); font-size: 13px; color: var(--ink); display: flex; align-items: flex-start; gap: 12px; }
+  .fit-panel li:last-child { border-bottom: none; }
+  .fit-panel.yes li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .fit-panel.no li::before { content: '×'; color: var(--warn); font-weight: 700; flex-shrink: 0; }
+
+  .profile-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 64px; align-items: start; }
+  .profile-text p { color: var(--ink-dim); margin-bottom: 20px; font-size: 15px; line-height: 1.7; }
+  .profile-stack { border: 1px solid var(--rule); padding: 28px; background: var(--bg-elev); }
+  .profile-stack h4 { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+  .stack-list { list-style: none; }
+  .stack-list li { padding: 8px 0; font-size: 12px; border-bottom: 1px dashed var(--rule); color: var(--ink); }
+  .stack-list li:last-child { border-bottom: none; }
+
+  .process-step { display: grid; grid-template-columns: 100px 1fr 280px; gap: 48px; padding: 48px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+  .process-step:last-of-type { border-bottom: none; }
+  .step-num { font-family: 'Fraunces', serif; font-size: 64px; line-height: 1; color: var(--accent); font-weight: 300; }
+  .step-content h3 { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.15; text-transform: none; margin-bottom: 16px; }
+  .step-content p { color: var(--ink-dim); font-size: 14px; line-height: 1.7; margin-bottom: 16px; }
+  .step-meta { border-left: 1px solid var(--rule); padding-left: 24px; }
+  .step-meta-item { margin-bottom: 20px; font-size: 12px; }
+  .step-meta-item .label { color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; margin-bottom: 4px; }
+  .step-meta-item .value { color: var(--ink); }
+
+  .faq-item { border-bottom: 1px solid var(--rule); padding: 28px 0; }
+  .faq-item:first-of-type { border-top: 1px solid var(--rule); }
+  .faq-question { width: 100%; background: none; border: none; color: var(--ink); font-family: 'Fraunces', serif; font-size: 20px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.3; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding: 0; transition: color 0.2s; }
+  .faq-question:hover { color: var(--accent); }
+  .faq-toggle { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 18px; flex-shrink: 0; transition: transform 0.25s; line-height: 1.3; }
+  .faq-item.open .faq-toggle { transform: rotate(45deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, margin-top 0.25s ease; }
+  .faq-item.open .faq-answer { max-height: 800px; margin-top: 18px; }
+  .faq-answer p { color: var(--ink-dim); font-size: 14px; line-height: 1.7; margin-bottom: 12px; max-width: 70ch; }
+  .faq-answer p:last-child { margin-bottom: 0; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .contact-method { border: 1px solid var(--rule); padding: 40px; background: var(--bg-elev); transition: all 0.25s; }
+  .contact-method:hover { border-color: var(--accent); }
+  .contact-method .icon { font-family: 'Fraunces', serif; font-size: 56px; color: var(--accent); line-height: 1; margin-bottom: 24px; }
+  .contact-method h3 { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; text-transform: none; letter-spacing: -0.015em; margin-bottom: 16px; }
+  .contact-method p { color: var(--ink-dim); font-size: 13px; line-height: 1.7; margin-bottom: 28px; }
+  .contact-link { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border: 1px solid var(--rule); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); transition: all 0.2s; }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+  .contact-detail { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--rule); }
+  .contact-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .detail-item .label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 8px; }
+  .detail-item .value { font-size: 14px; color: var(--ink); }
+
+  .final-cta { background: var(--bg-elev); text-align: center; padding: 100px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .final-cta h2 { margin: 0 auto 24px; }
+  .final-cta p { color: var(--ink-dim); max-width: 56ch; margin: 0 auto 32px; font-size: 15px; }
+
+  footer { padding: 48px 0 32px; color: var(--ink-dim); font-size: 11px; }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-meta { display: flex; gap: 24px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  @media (max-width: 860px) {
+    nav ul { gap: 14px; font-size: 10px; }
+    nav ul li:nth-child(n+5) { display: none; }
+    .thesis-grid, .services-grid, .symptoms-grid, .fit-grid, .profile-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .service-detail { grid-template-columns: 1fr; gap: 24px; }
+    .service-detail .sd-left { display: flex; align-items: baseline; gap: 16px; }
+    .sd-deliverables ul { grid-template-columns: 1fr; }
+    .contact-detail-grid { grid-template-columns: 1fr; }
+    .process-step { grid-template-columns: 1fr; gap: 24px; }
+    .step-meta { border-left: none; border-top: 1px solid var(--rule); padding-left: 0; padding-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .container { padding: 0 20px; }
+    .hero { padding: 60px 0 50px; }
+    section, .final-cta { padding: 50px 0; }
+    .faq-question { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="status-bar container">
+  <div><span class="status-dot"></span>NOW BOOKING — Q3 2026 ENGAGEMENTS</div>
+  <div id="clock">MTL · LOADING...</div>
+</div>
+
+<header>
+  <div class="container header-inner">
+    <a href="#home" class="logo" data-page="home">
+      <span class="logo-mark"></span>
+      JEREMY&nbsp;ROTENBERG <span style="color:var(--ink-dim);font-weight:400;">// REVOPS</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#home" data-page="home">Home</a></li>
+        <li><a href="#services" data-page="services">Services</a></li>
+        <li><a href="#process" data-page="process">Process</a></li>
+        <li><a href="#fit" data-page="fit">Who We Serve</a></li>
+        <li><a href="#faq" data-page="faq">FAQ</a></li>
+        <li><a href="#contact" data-page="contact" class="nav-cta">Book a call</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-meta">REVOPS CONSULTING · BUILT FOR B2B</div>
+      <h1>Your CRM is the reason your <span class="strike">AI</span> <span class="accent">revenue data</span> isn't working.</h1>
+      <p class="hero-sub">Your pipeline doesn't match how deals actually close. Your dashboards contradict each other. Attribution is a guess. Before you buy another tool — or build another AI workflow on top of broken data — fix the foundation. That's what this practice does.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary" data-page="contact">Book a 30-min call <span class="arrow">→</span></a>
+        <a href="#services" class="btn" data-page="services">See services <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label"><span class="index">[01]</span><span>Sound familiar?</span><span class="rule"></span></div>
+      <div class="symptoms-grid">
+        <div class="symptom-card">
+          <div class="symbol">?</div>
+          <h3>Your reports contradict each other.</h3>
+          <p>Sales says one number. Marketing says another. Finance has a third. Nobody trusts the dashboards, so leadership runs on gut.</p>
+        </div>
+        <div class="symptom-card">
+          <div class="symbol">/</div>
+          <h3>Your pipeline lies.</h3>
+          <p>Deals sit in "negotiation" for months. Forecast probabilities haven't been touched in two years. Stage definitions live in someone's head.</p>
+        </div>
+        <div class="symptom-card">
+          <div class="symbol">~</div>
+          <h3>You can't tell what's actually working.</h3>
+          <p>Attribution is "last touch" or worse. You're spending on marketing but can't say which channels create pipeline that closes.</p>
+        </div>
+        <div class="symptom-card">
+          <div class="symbol">!</div>
+          <h3>You want to "do AI" but your data isn't ready.</h3>
+          <p>You've evaluated AI vendors. They demoed beautifully. But you suspect — correctly — that pointing them at your current CRM will produce confident garbage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label"><span class="index">[02]</span><span>What this practice does</span><span class="rule"></span></div>
+      <div class="thesis-grid">
+        <div class="thesis-text">
+          <h2>Fix the revenue stack so your data tells you the truth.</h2>
+          <p>Most B2B companies between 10 and 150 employees have <strong>broken pipelines, decaying contact data, and attribution that's a fiction</strong>. The fix isn't more software. It's the unglamorous work underneath: taxonomy, lifecycle stages, deal-stage hygiene, attribution logic, governance.</p>
+          <p>Do that work and your reporting becomes trustworthy, your forecasts get accurate, and AI tooling actually has a substrate to work on. <strong>Skip it and every tool you buy makes the problem more expensive.</strong></p>
+          <p>You'll work directly with one senior operator — not a junior consultant on behalf of a partner you'll never see again.</p>
+        </div>
+        <div class="thesis-data">
+          <div class="data-row"><span class="key">Specialization</span><span class="val">B2B RevOps</span></div>
+          <div class="data-row"><span class="key">Best for</span><span class="val">10–150 employees</span></div>
+          <div class="data-row"><span class="key">Primary stack</span><span class="val">HubSpot · Salesforce</span></div>
+          <div class="data-row"><span class="key">Engagement style</span><span class="val">Fixed-scope</span></div>
+          <div class="data-row"><span class="key">Typical start</span><span class="val">2–4 weeks out</span></div>
+          <div class="data-row"><span class="key">Region</span><span class="val">North America</span></div>
+          <div class="data-row"><span class="key">Languages</span><span class="val">EN · FR</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label"><span class="index">[03]</span><span>Services</span><span class="rule"></span><a href="#services" data-page="services" style="color:var(--accent);">View all →</a></div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-tag">DIAGNOSTIC</div>
+          <div class="service-name">RevOps Audit</div>
+          <p class="service-desc">A full inspection of your CRM, pipeline, lifecycle stages, and attribution. You get a written report and a prioritized remediation roadmap.</p>
+          <div class="service-meta"><div>Timeline<strong>2–3 wks</strong></div><div>Format<strong>Fixed-scope</strong></div></div>
+        </div>
+        <div class="service-card">
+          <div class="service-tag">DIAGNOSTIC</div>
+          <div class="service-name">AI-Readiness Audit</div>
+          <p class="service-desc">Measure the gap between your data today and what AI tooling actually requires. Identify what to fix before you spend on vendors.</p>
+          <div class="service-meta"><div>Timeline<strong>2 wks</strong></div><div>Format<strong>Fixed-scope</strong></div></div>
+        </div>
+        <div class="service-card">
+          <div class="service-tag">EXECUTION</div>
+          <div class="service-name">Implementation Sprints</div>
+          <p class="service-desc">Targeted builds — attribution models, pipeline redesigns, taxonomy rollouts, dashboard architecture. Defined scope, defined end date.</p>
+          <div class="service-meta"><div>Timeline<strong>1–4 wks</strong></div><div>Format<strong>Per sprint</strong></div></div>
+        </div>
+        <div class="service-card">
+          <div class="service-tag">ONGOING</div>
+          <div class="service-name">Fractional RevOps</div>
+          <p class="service-desc">A senior RevOps operator on call without the cost of a full hire. Capped hours, written scope, stage-gated milestones.</p>
+          <div class="service-meta"><div>Cadence<strong>Monthly</strong></div><div>Format<strong>Retainer</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <h2>Let's see if there's a fit.</h2>
+      <p>A 30-minute call. No deck, no script. We talk through your stack, what's broken, and whether this practice is the right next step. If it isn't, you'll get a straight answer and, where possible, a better referral.</p>
+      <a href="#contact" class="btn btn-primary" data-page="contact">Book a call <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+</div>
+
+<!-- SERVICES -->
+<div class="page" id="page-services">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-meta">SERVICES</div>
+      <h1>Four ways to <span class="accent">work together.</span></h1>
+      <p class="hero-sub">Every engagement starts with defined scope, defined deliverables, and a defined end date. No open-ended hours. No "transformation" packages. You buy a diagnostic or a build, and the deliverables are written into the contract before you sign anything.</p>
+    </div>
+  </section>
+
+  <section style="padding:40px 0;">
+    <div class="container">
+
+      <div class="service-detail">
+        <div class="sd-left"><div class="num">01</div><div class="label">Diagnostic · 2–3 weeks</div></div>
+        <div class="sd-right">
+          <h3 class="sd-title">RevOps Audit</h3>
+          <p>A full inspection of your revenue operations stack. What's working, what's silently broken, what's costing you reporting integrity. You get a written report — not a slide deck — and a prioritized remediation roadmap you can execute with your internal team or with us.</p>
+          <p><strong style="color:var(--ink);">Best for you if:</strong> your CRM looks technically correct but you don't trust the numbers it produces, your pipeline stages don't match how deals actually move, or your team has stopped maintaining properties because nobody knows what they mean anymore.</p>
+          <div class="sd-deliverables">
+            <div class="sd-deliverables-title">What you get</div>
+            <ul>
+              <li>Property and field audit</li>
+              <li>Pipeline stage assessment</li>
+              <li>Lifecycle stage architecture review</li>
+              <li>Reporting integrity check</li>
+              <li>Workflow and automation audit</li>
+              <li>Prioritized remediation roadmap</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-detail">
+        <div class="sd-left"><div class="num">02</div><div class="label">Diagnostic · 2 weeks</div></div>
+        <div class="sd-right">
+          <h3 class="sd-title">AI-Readiness Audit</h3>
+          <p>Your CRM is the substrate. If it's full of decay, any AI tool you layer on top — agents, scoring models, attribution engines, copilots — will produce confident garbage at scale. This audit measures the gap between where your data is and where it needs to be for AI applications to be trustworthy.</p>
+          <p><strong style="color:var(--ink);">Best for you if:</strong> you're evaluating AI vendors, building internal agents, or being asked by leadership to "do something with AI." This tells you whether you can, what you need to fix first, and which use cases are actually viable for your data today.</p>
+          <div class="sd-deliverables">
+            <div class="sd-deliverables-title">What you get</div>
+            <ul>
+              <li>Data quality scorecard</li>
+              <li>Taxonomy and classification review</li>
+              <li>Property architecture audit</li>
+              <li>Identity resolution assessment</li>
+              <li>AI use-case viability matrix</li>
+              <li>Foundation roadmap</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-detail">
+        <div class="sd-left"><div class="num">03</div><div class="label">Execution · 1–4 weeks</div></div>
+        <div class="sd-right">
+          <h3 class="sd-title">Implementation Sprints</h3>
+          <p>You already know what's broken. You need someone to build the fix without a six-month engagement contract. Implementation sprints are sized so the deliverable lands and the engagement closes — no scope creep, no surprise retainers.</p>
+          <p><strong style="color:var(--ink);">Best for you if:</strong> you've done a discovery exercise already (with us or anyone else) and you need senior hands to execute. Common projects: multi-touch attribution models, pipeline redesigns with revised forecast probabilities, industry taxonomy rollouts, marketing activity tracking, dashboard suites for sales leadership.</p>
+          <div class="sd-deliverables">
+            <div class="sd-deliverables-title">Common sprints</div>
+            <ul>
+              <li>Multi-touch attribution build</li>
+              <li>Pipeline redesign and migration</li>
+              <li>Taxonomy / industry classification</li>
+              <li>Custom property architecture</li>
+              <li>Lifecycle stage rebuild</li>
+              <li>Reporting dashboard suite</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-detail">
+        <div class="sd-left"><div class="num">04</div><div class="label">Ongoing · Monthly</div></div>
+        <div class="sd-right">
+          <h3 class="sd-title">Fractional RevOps</h3>
+          <p>You need a senior RevOps operator on call but you can't justify — or don't need — a full-time hire. Capped hours per month, written scope, stage-gated milestones. You always know what you're paying for and what's getting done.</p>
+          <p><strong style="color:var(--ink);">Best for you if:</strong> you're founder-led and between RevOps maturity stages, or your existing RevOps lead is overloaded with day-to-day operations and needs senior strategic backup on demand.</p>
+          <div class="sd-deliverables">
+            <div class="sd-deliverables-title">Scope</div>
+            <ul>
+              <li>CRM administration</li>
+              <li>Reporting maintenance</li>
+              <li>Workflow design and updates</li>
+              <li>Data governance oversight</li>
+              <li>Quarterly stack reviews</li>
+              <li>Strategic advisory on call</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <h2>Not sure which fits?</h2>
+      <p>A 30-minute call is enough to scope the right engagement — or to confirm we're not the right fit before either of us invests more time.</p>
+      <a href="#contact" class="btn btn-primary" data-page="contact">Book a call <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+</div>
+
+<!-- PROCESS -->
+<div class="page" id="page-process">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-meta">HOW IT WORKS</div>
+      <h1>From first call to <span class="accent">delivered work</span> — what to expect.</h1>
+      <p class="hero-sub">A predictable process you can plan around. Every engagement follows the same shape: short discovery, scoped proposal, structured delivery, clean close. No surprises, no scope creep, no mystery deliverables.</p>
+    </div>
+  </section>
+
+  <section style="padding:40px 0;">
+    <div class="container">
+
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Discovery call</h3>
+          <p>A 30-minute conversation. You describe your stack, your team, and what's not working. I ask the questions that surface what the real problem is — which is often different from what you came in thinking it was.</p>
+          <p>At the end of the call you'll have a clear sense of whether this practice can help. If it can't, I'll tell you directly and point you somewhere that can.</p>
+        </div>
+        <div class="step-meta">
+          <div class="step-meta-item"><div class="label">Duration</div><div class="value">30 minutes</div></div>
+          <div class="step-meta-item"><div class="label">Cost</div><div class="value">Free</div></div>
+          <div class="step-meta-item"><div class="label">Outcome</div><div class="value">Go / no-go on a scoped proposal</div></div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Scoped proposal</h3>
+          <p>Within 3–5 days you get a written proposal with fixed scope, fixed price, defined deliverables, and a delivery timeline. No mystery line items, no "to be determined" sections, no hourly rates that drift.</p>
+          <p>If anything in the proposal doesn't fit — scope, timing, budget — we adjust before you sign. The contract reflects what was agreed; nothing else.</p>
+        </div>
+        <div class="step-meta">
+          <div class="step-meta-item"><div class="label">Turnaround</div><div class="value">3–5 business days</div></div>
+          <div class="step-meta-item"><div class="label">Format</div><div class="value">Written proposal + SOW</div></div>
+          <div class="step-meta-item"><div class="label">Pricing</div><div class="value">Fixed fee, no hourly</div></div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>Kickoff &amp; access</h3>
+          <p>Once you sign, we schedule a kickoff call with your stakeholders, agree on a communication cadence, and get the technical access I need. For HubSpot or Salesforce work, that's typically Super Admin or equivalent for the duration of the engagement.</p>
+          <p>You'll get a shared workspace (Notion or your tool of choice) where every artifact, finding, and deliverable lives. No "I'll send it over" — everything is documented as it happens.</p>
+        </div>
+        <div class="step-meta">
+          <div class="step-meta-item"><div class="label">Kickoff</div><div class="value">60 minutes</div></div>
+          <div class="step-meta-item"><div class="label">Cadence</div><div class="value">Weekly check-ins</div></div>
+          <div class="step-meta-item"><div class="label">Workspace</div><div class="value">Shared and persistent</div></div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Delivery</h3>
+          <p>Work happens against the milestones in the SOW. For audits, that means investigation, analysis, and report drafting. For sprints, it means the build itself plus testing and handoff documentation.</p>
+          <p>You see work in progress, not just at the end. If something we find changes the scope — say the audit surfaces a problem worth its own sprint — we discuss it explicitly. You decide what to add, what to defer, what to drop.</p>
+        </div>
+        <div class="step-meta">
+          <div class="step-meta-item"><div class="label">Visibility</div><div class="value">Continuous</div></div>
+          <div class="step-meta-item"><div class="label">Change management</div><div class="value">Written and approved</div></div>
+          <div class="step-meta-item"><div class="label">Quality gate</div><div class="value">Review before delivery</div></div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h3>Handoff &amp; close</h3>
+          <p>Final deliverables, a walkthrough with your team, and documentation your internal owners can maintain after the engagement closes. The goal isn't to make you dependent — it's to leave the system in a state your team can operate confidently.</p>
+          <p>30 days after close, a free check-in call to answer questions and surface anything that's drifting. After that, you're either done or you have a clear next sprint scoped.</p>
+        </div>
+        <div class="step-meta">
+          <div class="step-meta-item"><div class="label">Handoff</div><div class="value">Live walkthrough + docs</div></div>
+          <div class="step-meta-item"><div class="label">Follow-up</div><div class="value">30-day free check-in</div></div>
+          <div class="step-meta-item"><div class="label">Next steps</div><div class="value">Optional, never assumed</div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <h2>Ready for the first step?</h2>
+      <p>The discovery call is free, short, and useful even if we don't end up working together. Worst case, you walk away with a better diagnosis of what's actually wrong.</p>
+      <a href="#contact" class="btn btn-primary" data-page="contact">Book a call <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+</div>
+
+<!-- WHO WE SERVE -->
+<div class="page" id="page-fit">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-meta">WHO WE SERVE</div>
+      <h1>Built for B2B teams who've <span class="accent">outgrown their CRM</span> setup.</h1>
+      <p class="hero-sub">This practice works best for a specific kind of company. Below is who's a great fit, who isn't, and why honesty about that saves both of us time.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label"><span class="index">[01]</span><span>Is this a fit?</span><span class="rule"></span></div>
+      <div class="fit-grid">
+        <div class="fit-panel yes">
+          <span class="header-tag">A GREAT FIT IF</span>
+          <ul>
+            <li>You're a B2B company with 10–150 employees</li>
+            <li>You already have HubSpot or Salesforce deployed</li>
+            <li>You have multiple deal types or sales motions</li>
+            <li>Your revenue is between $1M and $30M ARR</li>
+            <li>You're feeling the limits of your current setup — reports that don't agree, attribution gaps, pipeline that doesn't reflect reality</li>
+            <li>You have a clear decision-maker who can approve work</li>
+            <li>You want a senior operator, not a junior consultant</li>
+          </ul>
+        </div>
+        <div class="fit-panel no">
+          <span class="header-tag">PROBABLY NOT IF</span>
+          <ul>
+            <li>You're pure e-commerce or DTC</li>
+            <li>You're a marketing or creative agency</li>
+            <li>You're in supply chain, warehousing, or distribution</li>
+            <li>You're pre-revenue or pre-CRM</li>
+            <li>You already have an internal RevOps team of 5+</li>
+            <li>You need someone available evenings and weekends</li>
+            <li>You're shopping primarily on price</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label"><span class="index">[02]</span><span>Industries</span><span class="rule"></span><span>Where this work translates well</span></div>
+      <div class="services-grid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="service-card">
+          <div class="service-tag">VERTICAL</div>
+          <div class="service-name" style="font-size:22px;">Professional Services</div>
+          <p class="service-desc" style="margin-bottom:0;">Consultancies, advisory firms, and B2B agencies with multi-stage deal cycles and long sales motions.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-tag">VERTICAL</div>
+          <div class="service-name" style="font-size:22px;">B2B SaaS</div>
+          <p class="service-desc" style="margin-bottom:0;">Early- and mid-stage SaaS companies with mixed product-led and sales-led motions.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-tag">VERTICAL</div>
+          <div class="service-name" style="font-size:22px;">Light Industrial</div>
+          <p class="service-desc" style="margin-bottom:0;">Manufacturers and equipment vendors selling into long, technical, multi-stakeholder sales cycles.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-tag">VERTICAL</div>
+          <div class="service-name" style="font-size:22px;">Fintech &amp; Insurtech</div>
+          <p class="service-desc" style="margin-bottom:0;">Companies with complex compliance-driven lifecycle stages and account hierarchies to manage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label"><span class="index">[03]</span><span>Who you're working with</span><span class="rule"></span></div>
+      <div class="profile-grid">
+        <div class="profile-text">
+          <h2>You hire one person, not a logo.</h2>
+          <p>This is a solo practice, not an agency with junior staff. Jeremy Rotenberg leads every engagement from discovery through delivery. The person you talk to on the first call is the person doing the work.</p>
+          <p>Day job: Senior Analyst, Revenue Operations at a B2B consulting firm where the scope covers HubSpot administration, pipeline reporting, marketing operations, sales enablement, and data governance. This practice exists because the gap between what most B2B companies have built and what they actually need is wide, well-defined, and underserved at the small-to-mid-market level.</p>
+          <p>Background: BA Political Science, McGill. Graduate Certificate in Data Analysis for Complex Systems, also McGill. Bilingual EN/FR. Based in Montreal.</p>
+        </div>
+        <div class="profile-stack">
+          <h4>// Working stack</h4>
+          <ul class="stack-list">
+            <li>HubSpot — Data, Marketing, Sales Hub Pro</li>
+            <li>Salesforce</li>
+            <li>Cognism · NeverBounce</li>
+            <li>LinkedIn Sales Navigator</li>
+            <li>GA4 · Semrush</li>
+            <li>Aircall · Popl</li>
+            <li>Claude · GPT (internal leverage)</li>
+            <li>Notion · Slack</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <h2>Look like a fit?</h2>
+      <p>The discovery call is the fastest way to know. If you check most of the boxes above, book a 30-minute slot — and if we're not the right match, you'll get a referral to someone who is.</p>
+      <a href="#contact" class="btn btn-primary" data-page="contact">Book a call <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+</div>
+
+<!-- FAQ -->
+<div class="page" id="page-faq">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-meta">FAQ</div>
+      <h1>The questions <span class="accent">most prospects</span> ask first.</h1>
+      <p class="hero-sub">Answered directly. If something you need to know isn't here, the contact page has a Calendly link and an email address — both go to the same inbox.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      <div class="section-label"><span class="index">[01]</span><span>Pricing &amp; engagement</span><span class="rule"></span></div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>How much does an engagement cost?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>Pricing is fixed per engagement and quoted in the proposal after the discovery call. Audits and sprints are priced as a flat fee for the entire scope. Fractional retainers are priced per month with a capped hour commitment.</p>
+          <p>I don't publish a price list because the variance between engagements is significant — a HubSpot audit for a 15-person SaaS company and one for a 120-person manufacturer are different exercises. What I will commit to: every proposal has a fixed price, no hourly drift, and no surprises mid-engagement.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Why fixed-fee instead of hourly?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>Hourly billing rewards slow work. Fixed-fee aligns my incentive with yours: deliver the outcome efficiently. You know your total cost before you sign. I'm motivated to be fast and accurate.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>What happens if the scope changes mid-engagement?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>If we discover something during the engagement that warrants additional work — a problem the audit surfaces that wasn't in scope, for example — we discuss it explicitly. You decide whether to add a sprint, defer it, or drop it. Nothing gets added to your bill without a signed change order.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Do you take equity or revenue-share arrangements?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>No. Cash engagements only. It keeps the relationship clean and the incentives aligned with delivering a defined outcome.</p>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top: 64px;"><span class="index">[02]</span><span>The work itself</span><span class="rule"></span></div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Do you work with platforms other than HubSpot and Salesforce?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>HubSpot is the deepest area of expertise. Salesforce engagements are accepted selectively. For other platforms — Pipedrive, Zoho, Copper, Close, custom CRMs — the principles of RevOps work transfer, but I'd want to discuss the specific scope before quoting. If it's not a fit, I'll say so on the call.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Will you actually do the implementation, or just produce reports?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>Both. Audits produce written reports and roadmaps. Implementation sprints are execution work — building the attribution model, redesigning the pipeline, deploying the taxonomy. You can engage for one, the other, or both in sequence.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Is this an AI-focused practice?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>No. This is a RevOps practice. AI shows up because clean RevOps foundations are what make AI tooling viable — and most companies trying to "adopt AI" are running into this exact wall.</p>
+          <p>I won't sell you a chatbot, build you a custom agent as a headline service, or deliver a standalone "AI strategy" deck. If those are what you need, I'll refer you somewhere better.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Do you handle marketing creative or content production?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>No. This is a revenue operations practice, not a marketing agency. The scope is the systems, data, and infrastructure underneath your go-to-market motion — not the creative outputs that ride on top.</p>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top: 64px;"><span class="index">[03]</span><span>Logistics</span><span class="rule"></span></div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>How fast can we start?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>Typical lead time from signed contract to kickoff is 2–4 weeks, depending on current capacity. The discovery call itself is usually available within a week. If timing is critical for you, mention it on the call — sometimes things shift.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Do you work remotely or on-site?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>Remote by default. On-site visits are possible for North American clients with a defined business reason — kickoff workshops, stakeholder interviews — and are quoted separately.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>How do you handle confidentiality and data access?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>Every engagement starts with a signed mutual NDA. Technical access (HubSpot Super Admin, etc.) is provisioned for the duration of the engagement and revoked at close. No client data is retained after the 30-day post-engagement check-in.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Can you work in French?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>Yes. Engagements, deliverables, and stakeholder conversations can be conducted entirely in French. Based in Montreal, fully bilingual.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>What if I'm not sure whether I need an audit or a sprint?</span><span class="faq-toggle">+</span></button>
+        <div class="faq-answer">
+          <p>That's exactly what the discovery call is for. By the end of 30 minutes, you'll have a clear sense of which engagement type fits — or whether the right answer is to do nothing for now.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <h2>Still have questions?</h2>
+      <p>Bring them to the discovery call — or send them by email if you'd rather get answers in writing first.</p>
+      <a href="#contact" class="btn btn-primary" data-page="contact">Get in touch <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-meta">CONTACT</div>
+      <h1>Start with a <span class="accent">30-minute</span> conversation.</h1>
+      <p class="hero-sub">No deck, no script. We talk about your stack, the problem you're trying to solve, and whether this practice is the right fit. If it isn't, you'll get an honest answer — and where possible, a referral to someone better suited.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="contact-grid">
+
+        <div class="contact-method">
+          <div class="icon">→</div>
+          <h3>Book a call</h3>
+          <p>The fastest way to start. Pick a 30-minute slot that works for you. Calls are Montreal time zone — generally 7–9am or after 6pm on weekdays.</p>
+          <a href="https://calendly.com/jeremyrotenberg" target="_blank" rel="noopener" class="contact-link">calendly.com/jeremyrotenberg <span>↗</span></a>
+        </div>
+
+        <div class="contact-method">
+          <div class="icon">@</div>
+          <h3>Send a note</h3>
+          <p>Prefer email first? Send a few lines about your company, your stack, and what's broken. You'll get a response within 48 hours on business days.</p>
+          <a href="mailto:hello@jeremyrotenberg.com" class="contact-link">hello@jeremyrotenberg.com <span>↗</span></a>
+        </div>
+
+      </div>
+
+      <div class="contact-detail">
+        <div class="contact-detail-grid">
+          <div class="detail-item"><div class="label">// Based in</div><div class="value">Montréal, Québec</div></div>
+          <div class="detail-item"><div class="label">// Hours</div><div class="value">Outside 9–5 EST · By appointment</div></div>
+          <div class="detail-item"><div class="label">// Languages</div><div class="value">English · Français</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label"><span class="index">[02]</span><span>What happens next</span><span class="rule"></span></div>
+      <div class="thesis-grid">
+        <div>
+          <h2>A clear, predictable next step.</h2>
+          <p style="color:var(--ink-dim);font-size:15px;">After the discovery call, you'll have one of three outcomes: a scoped proposal in your inbox within 3–5 days, a referral to someone better suited if it's not a fit, or a clear "wait until X" if your situation isn't ripe yet.</p>
+          <p style="color:var(--ink-dim);font-size:15px;">No follow-up sequences, no pressure, no quarterly check-ins from a sales rep. If you're the right fit and the timing is right, you'll know — and so will I.</p>
+        </div>
+        <div class="thesis-data">
+          <div class="data-row"><span class="key">First response</span><span class="val">&lt; 48 hours</span></div>
+          <div class="data-row"><span class="key">Discovery call</span><span class="val">30 minutes · free</span></div>
+          <div class="data-row"><span class="key">Proposal turnaround</span><span class="val">3–5 business days</span></div>
+          <div class="data-row"><span class="key">Typical kickoff</span><span class="val">2–4 weeks out</span></div>
+          <div class="data-row"><span class="key">Booking window</span><span class="val accent">Q3 2026 open</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 JEREMY ROTENBERG · REVOPS CONSULTING</div>
+    <div class="footer-meta">
+      <span>MONTRÉAL</span>
+      <span>EN · FR</span>
+      <span><span class="status-dot"></span>NOW BOOKING</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const pages = document.querySelectorAll('.page');
+
+  function showPage(pageId) {
+    pages.forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + pageId);
+    if (target) target.classList.add('active');
+
+    document.querySelectorAll('nav a').forEach(a => {
+      a.classList.toggle('active', a.dataset.page === pageId && !a.classList.contains('nav-cta'));
+    });
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  document.querySelectorAll('[data-page]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const pageId = link.dataset.page;
+      window.location.hash = pageId;
+      showPage(pageId);
+    });
+  });
+
+  window.addEventListener('load', () => {
+    const hash = window.location.hash.replace('#', '') || 'home';
+    showPage(hash);
+  });
+
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.replace('#', '') || 'home';
+    showPage(hash);
+  });
+
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      item.classList.toggle('open');
+    });
+  });
+
+  function updateClock() {
+    const now = new Date();
+    const opts = { timeZone: 'America/Montreal', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    const time = now.toLocaleTimeString('en-US', opts);
+    document.getElementById('clock').textContent = `MTL · ${time} EST`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
